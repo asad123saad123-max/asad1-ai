@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#080a0f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="ASAD AI">
+<title>ASAD AI</title>
+<style>
+:root{--bg:#080a0f;--panel:#15171c;--panel2:#1c1f26;--gold:#d4af62;--text:#f6f4ef;--muted:#a6a7ad;--line:#292c34;--green:#70c49a}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+header{padding:22px 18px 14px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:rgba(8,10,15,.96);z-index:5;border-bottom:1px solid var(--line)}
+.brand{font-weight:800;letter-spacing:2px;color:var(--gold);font-size:18px}.tag{font-size:11px;color:var(--muted);margin-top:4px}.date{font-size:12px;color:var(--muted);text-align:right}
+main{padding:18px 16px 100px;max-width:760px;margin:auto}.welcome{font-size:25px;font-weight:750;margin:8px 0 5px}.sub{color:var(--muted);font-size:13px;margin-bottom:18px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:16px;margin:12px 0}.hero{background:linear-gradient(135deg,#1d1c19,#15171c 70%);border-color:#4a3d25}.hero small{color:var(--muted)}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:15px}.stat{background:#ffffff08;border-radius:12px;padding:12px 8px}.stat b{display:block;font-size:22px;color:var(--gold)}.stat span{font-size:11px;color:var(--muted)}
+.sectionhead{display:flex;align-items:center;justify-content:space-between;margin:22px 2px 8px}.sectionhead h2{font-size:17px;margin:0}.muted{color:var(--muted)}button,.btn{border:0;border-radius:12px;background:var(--gold);color:#17130b;padding:11px 14px;font-weight:700;font-size:13px;cursor:pointer}.btn.secondary,button.secondary{background:var(--panel2);border:1px solid var(--line);color:var(--text)}button.danger{background:#3a2022;color:#ffb6b6}.row{display:flex;gap:9px;align-items:center}.row>*{min-width:0}.grow{flex:1}.item{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid var(--line)}.item:last-child{border:0}.item input[type=checkbox]{accent-color:var(--gold);width:18px;height:18px}.item.done .itemtitle{text-decoration:line-through;color:var(--muted)}.itemtitle{font-weight:600}.meta{font-size:11px;color:var(--muted);margin-top:4px}
+input,textarea,select{width:100%;background:#0e1016;border:1px solid var(--line);color:var(--text);border-radius:11px;padding:12px;font:inherit;outline:none}textarea{min-height:110px;resize:vertical}label{display:block;font-size:12px;color:var(--muted);margin:10px 0 6px}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.formgrid .full{grid-column:1/-1}.pill{display:inline-block;padding:5px 9px;border-radius:30px;background:#2b2519;color:var(--gold);font-size:11px}.tabs{position:fixed;bottom:0;left:0;right:0;z-index:10;display:flex;justify-content:space-around;background:rgba(16,18,24,.97);border-top:1px solid var(--line);padding:9px 4px calc(9px + env(safe-area-inset-bottom));backdrop-filter:blur(14px)}.tab{background:transparent;color:var(--muted);padding:7px 4px;font-size:10px;display:flex;flex-direction:column;gap:4px;align-items:center;flex:1}.tab span:first-child{font-size:18px}.tab.active{color:var(--gold)}.page{display:none}.page.active{display:block}.empty{color:var(--muted);font-size:13px;padding:14px 2px}.prayers{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.prayer{background:var(--panel2);border:1px solid var(--line);padding:12px;border-radius:12px;display:flex;justify-content:space-between;align-items:center}.prayer input{width:18px;height:18px;accent-color:var(--gold)}.timer{text-align:center;padding:25px 10px}.clock{font-size:58px;font-weight:750;letter-spacing:2px;color:var(--gold);margin:15px}.actions{display:flex;justify-content:center;gap:9px;flex-wrap:wrap}.smallnote{font-size:11px;color:var(--muted);line-height:1.5}.hidden{display:none!important}
+</style>
+</head>
+<body>
+<header><div><div class="brand">ASAD AI</div><div class="tag">Plan Better. Live Better. Achieve More.</div></div><div class="date" id="today"></div></header>
+<main>
+<section class="page active" id="dashboard">
+<div class="welcome">Welcome back 👋</div><div class="sub">Make today count, one step at a time.</div>
+<div class="card hero"><small>YOUR DAILY PROGRESS</small><div class="stats"><div class="stat"><b id="doneCount">0</b><span>Completed</span></div><div class="stat"><b id="leftCount">0</b><span>Remaining</span></div><div class="stat"><b id="percent">0%</b><span>Progress</span></div></div></div>
+<div class="sectionhead"><h2>Today's tasks</h2><button onclick="showPage('tasks')">View all</button></div><div class="card" id="dashTasks"></div>
+<div class="sectionhead"><h2>Quick actions</h2></div><div class="row"><button class="grow" onclick="showPage('tasks')">＋ Add task</button><button class="grow secondary" onclick="showPage('focus')">◎ Focus</button></div>
+</section>
+<section class="page" id="tasks"><div class="welcome">My Tasks</div><div class="sub">Keep your priorities clear.</div>
+<div class="card"><div class="formgrid"><div class="full"><label>Task name</label><input id="taskName" placeholder="What do you need to do?"></div><div><label>Priority</label><select id="taskPriority"><option>Normal</option><option>High</option><option>Low</option></select></div><div><label>Due time</label><input id="taskTime" type="time"></div></div><button style="width:100%;margin-top:12px" onclick="addTask()">Add task</button></div><div class="card" id="taskList"></div></section>
+<section class="page" id="schedule"><div class="welcome">Daily Schedule</div><div class="sub">Plan your day with intention.</div>
+<div class="card"><div class="formgrid"><div class="full"><label>Activity</label><input id="eventName" placeholder="e.g. Study, work, exercise"></div><div><label>Start time</label><input id="eventTime" type="time"></div><div><label>Duration</label><input id="eventDuration" placeholder="e.g. 1 hour"></div></div><button style="width:100%;margin-top:12px" onclick="addEvent()">Add activity</button></div><div class="card" id="eventList"></div></section>
+<section class="page" id="habits"><div class="welcome">Habit Tracker</div><div class="sub">Small actions become big results.</div><div class="card"><label>New habit</label><div class="row"><input id="habitName" placeholder="e.g. Read 10 pages"><button onclick="addHabit()">Add</button></div></div><div class="card" id="habitList"></div>
+<div class="sectionhead"><h2>Daily prayers</h2></div><div class="card"><div class="prayers" id="prayerList"></div></div></section>
+<section class="page" id="focus"><div class="welcome">Focus Timer</div><div class="sub">One task. One focus. No distractions.</div><div class="card timer"><span class="pill">25 MINUTE SESSION</span><div class="clock" id="clock">25:00</div><div class="actions"><button onclick="startTimer()">Start</button><button class="secondary" onclick="pauseTimer()">Pause</button><button class="secondary" onclick="resetTimer()">Reset</button></div><p class="smallnote">Stay focused until the timer ends. Take a short break afterwards.</p></div></section>
+<section class="page" id="notes"><div class="welcome">Notes & Diary</div><div class="sub">Your thoughts, saved on this device.</div><div class="card"><textarea id="noteText" placeholder="Write your thoughts here..."></textarea><button style="width:100%;margin-top:10px" onclick="saveNote()">Save note</button><p class="smallnote" id="noteStatus">Notes are stored locally in this browser.</p></div></section>
+<section class="page" id="expenses"><div class="welcome">Money Tracker</div><div class="sub">Keep track of income and expenses.</div><div class="card"><div class="formgrid"><div><label>Type</label><select id="moneyType"><option>Expense</option><option>Income</option></select></div><div><label>Amount (₹)</label><input id="moneyAmount" type="number" min="0" placeholder="0"></div><div class="full"><label>Description</label><input id="moneyDesc" placeholder="e.g. Food, travel, salary"></div></div><button style="width:100%;margin-top:12px" onclick="addMoney()">Save transaction</button></div><div class="card" id="moneyList"></div></section>
+<section class="page" id="settings"><div class="welcome">Settings</div><div class="sub">Your ASAD AI app preferences.</div><div class="card"><b>Data & privacy</b><p class="smallnote">Your tasks, schedule, habits, notes and transactions are saved in this browser on this device. Clearing Safari website data may erase them. This first version does not sync to other devices.</p><button class="danger" onclick="clearData()">Clear all app data</button></div><div class="card"><b>ASAD AI Assistant</b><p class="smallnote">This version includes offline productivity tools. A connected AI chat assistant is not enabled yet.</p></div></section>
+</main>
+<nav class="tabs">
+<button class="tab active" data-page="dashboard" onclick="showPage('dashboard')"><span>⌂</span>Home</button>
+<button class="tab" data-page="tasks" onclick="showPage('tasks')"><span>✓</span>Tasks</button>
+<button class="tab" data-page="schedule" onclick="showPage('schedule')"><span>▦</span>Plan</button>
+<button class="tab" data-page="habits" onclick="showPage('habits')"><span>✦</span>Habits</button>
+<button class="tab" data-page="focus" onclick="showPage('focus')"><span>◷</span>Focus</button>
+<button class="tab" data-page="notes" onclick="showPage('notes')"><span>▤</span>Notes</button>
+<button class="tab" data-page="settings" onclick="showPage('settings')"><span>⚙</span>More</button>
+</nav>
+<script>
+const $=id=>document.getElementById(id);
+const load=(k,d=[])=>{try{return JSON.parse(localStorage.getItem('asad_'+k))??d}catch{return d}};
+const save=(k,v)=>localStorage.setItem('asad_'+k,JSON.stringify(v));
+let tasks=load('tasks'),events=load('events'),habits=load('habits'),money=load('money'),prayers=load('prayers',{Fajr:false,Dhuhr:false,Asr:false,Maghrib:false,Isha:false});
+function showPage(p){document.querySelectorAll('.page').forEach(x=>x.classList.toggle('active',x.id===p));document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.dataset.page===p));render()}
+function safe(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function addTask(){let n=$('taskName').value.trim();if(!n)return alert('Enter a task name.');tasks.push({id:Date.now(),name:n,priority:$('taskPriority').value,time:$('taskTime').value,done:false});save('tasks',tasks);$('taskName').value='';render()}
+function toggleTask(id){tasks=tasks.map(t=>t.id===id?{...t,done:!t.done}:t);save('tasks',tasks);render()}
+function deleteTask(id){tasks=tasks.filter(t=>t.id!==id);save('tasks',tasks);render()}
+function addEvent(){let n=$('eventName').value.trim();if(!n)return alert('Enter an activity.');events.push({id:Date.now(),name:n,time:$('eventTime').value,duration:$('eventDuration').value});save('events',events);$('eventName').value='';$('eventTime').value='';$('eventDuration').value='';render()}
+function addHabit(){let n=$('habitName').value.trim();if(!n)return;habits.push({id:Date.now(),name:n,done:false});save('habits',habits);$('habitName').value='';render()}
+function toggleHabit(id){habits=habits.map(h=>h.id===id?{...h,done:!h.done}:h);save('habits',habits);render()}
+function togglePrayer(n,v){prayers[n]=v;save('prayers',prayers)}
+function saveNote(){save('note',$('noteText').value);$('noteStatus').textContent='Saved on this device ✓'}
+function addMoney(){let a=Number($('moneyAmount').value),d=$('moneyDesc').value.trim();if(!(a>0)||!d)return alert('Enter a valid amount and description.');money.unshift({id:Date.now(),type:$('moneyType').value,amount:a,desc:d});save('money',money);$('moneyAmount').value='';$('moneyDesc').value='';render()}
+function clearData(){if(confirm('Delete all ASAD AI data from this browser? This cannot be undone.')){Object.keys(localStorage).filter(k=>k.startsWith('asad_')).forEach(k=>localStorage.removeItem(k));localStorage.removeItem('asad_note');location.reload()}}
+function render(){let done=tasks.filter(t=>t.done).length,left=tasks.length-done,pct=tasks.length?Math.round(done/tasks.length*100):0;$('doneCount').textContent=done;$('leftCount').textContent=left;$('percent').textContent=pct+'%';
+let taskHTML=arr=>arr.length?arr.map(t=>`<div class="item ${t.done?'done':''}"><input type="checkbox" ${t.done?'checked':''} onchange="toggleTask(${t.id})"><div class="grow"><div class="itemtitle">${safe(t.name)}</div><div class="meta">${safe(t.priority)} ${t.time?'· '+safe(t.time):''}</div></div><button class="danger" onclick="deleteTask(${t.id})">×</button></div>`).join(''):'<div class="empty">No tasks yet. Add your first task.</div>';
+$('taskList').innerHTML=taskHTML(tasks);$('dashTasks').innerHTML=taskHTML(tasks.slice(0,4));
+$('eventList').innerHTML=events.length?events.sort((a,b)=>(a.time||'').localeCompare(b.time||'')).map(e=>`<div class="item"><div class="grow"><div class="itemtitle">${safe(e.name)}</div><div class="meta">${safe(e.time||'No time')} · ${safe(e.duration||'')}</div></div><button class="danger" onclick="events=events.filter(x=>x.id!==${e.id});save('events',events);render()">×</button></div>`).join(''):'<div class="empty">No activities planned.</div>';
+$('habitList').innerHTML=habits.length?habits.map(h=>`<div class="item"><input type="checkbox" ${h.done?'checked':''} onchange="toggleHabit(${h.id})"><div class="grow itemtitle">${safe(h.name)}</div><button class="danger" onclick="habits=habits.filter(x=>x.id!==${h.id});save('habits',habits);render()">×</button></div>`).join(''):'<div class="empty">Add a habit to get started.</div>';
+$('prayerList').innerHTML=Object.keys(prayers).map(n=>`<label class="prayer">${n}<input type="checkbox" ${prayers[n]?'checked':''} onchange="togglePrayer('${n}',this.checked)"></label>`).join('');
+let income=money.filter(x=>x.type==='Income').reduce((s,x)=>s+x.amount,0),expense=money.filter(x=>x.type==='Expense').reduce((s,x)=>s+x.amount,0);
+$('moneyList').innerHTML=`<div class="stats"><div class="stat"><b>₹${income}</b><span>Income</span></div><div class="stat"><b>₹${expense}</b><span>Expense</span></div><div class="stat"><b>₹${income-expense}</b><span>Balance</span></div></div>`+(money.length?money.map(m=>`<div class="item"><div class="grow"><div class="itemtitle">${safe(m.desc)}</div><div class="meta">${m.type}</div></div><b style="color:${m.type==='Income'?'var(--green)':'#ff9b9b'}">${m.type==='Income'?'+':'−'}₹${m.amount}</b><button class="danger" onclick="money=money.filter(x=>x.id!==${m.id});save('money',money);render()">×</button></div>`).join(''):'<div class="empty">No transactions yet.</div>');
+}
+$('today').textContent=new Date().toLocaleDateString(undefined,{weekday:'short',day:'numeric',month:'short'});
+$('noteText').value=load('note','');
+let seconds=1500,interval=null;
+function paintClock(){$('clock').textContent=String(Math.floor(seconds/60)).padStart(2,'0')+':'+String(seconds%60).padStart(2,'0')}
+function startTimer(){if(interval)return;interval=setInterval(()=>{if(seconds>0){seconds--;paintClock()}else{clearInterval(interval);interval=null;alert('Focus session complete! Take a break.')}},1000)}
+function pauseTimer(){clearInterval(interval);interval=null}
+function resetTimer(){pauseTimer();seconds=1500;paintClock()}
+render();paintClock();
+</script>
+</body></html>
